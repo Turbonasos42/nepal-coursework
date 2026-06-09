@@ -1,0 +1,16 @@
+[project]
+name = "nepal-protest-backtest"
+version = "0.1.0"
+description = "Historical replay MVP for forecasting Nepal September 2025 protest signals."
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "playwright>=1.55",
+    "requests>=2.31",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,92 @@
+topic,language,script,term,term_type
+censorship_social_media,en,latin,social media ban,phrase
+censorship_social_media,en,latin,facebook ban,phrase
+censorship_social_media,en,latin,platform ban,phrase
+censorship_social_media,en,latin,registration rules,phrase
+censorship_social_media,en,latin,free speech,phrase
+censorship_social_media,en,latin,censorship,keyword
+censorship_social_media,en,latin,VPN,keyword
+censorship_social_media,ne,devanagari,सामाजिक सञ्जाल प्रतिबन्ध,phrase
+censorship_social_media,ne,devanagari,सामाजिक संजाल बन्द,phrase
+censorship_social_media,ne,devanagari,सूचीकरण,keyword
+censorship_social_media,ne,devanagari,दर्ता,keyword
+censorship_social_media,ne,devanagari,अभिव्यक्ति स्वतन्त्रता,phrase
+censorship_social_media,ne-latn,latin,samajik sanjal,phrase
+censorship_social_media,ne-latn,latin,sanjal banda,phrase
+censorship_social_media,hi,devanagari,सोशल मीडिया प्रतिबंध,phrase
+censorship_social_media,ur,arabic,سوشل میڈیا,phrase
+censorship_social_media,ur,arabic,پابندی,keyword
+corruption_nepotism,en,latin,corruption,keyword
+corruption_nepotism,en,latin,anti corruption,phrase
+corruption_nepotism,en,latin,nepotism,keyword
+corruption_nepotism,en,latin,nepo baby,phrase
+corruption_nepotism,en,latin,nepo kids,phrase
+corruption_nepotism,ne-latn,latin,bhrastachar,keyword
+corruption_nepotism,ne-latn,latin,bhrashtachar,keyword
+corruption_nepotism,ne-latn,latin,bhrashtachar biruddha,phrase
+corruption_nepotism,ne-latn,latin,natawad,keyword
+corruption_nepotism,ne,devanagari,भ्रष्टाचार,keyword
+corruption_nepotism,ne,devanagari,भ्रष्टाचार विरुद्ध,phrase
+corruption_nepotism,ne,devanagari,नातावाद,keyword
+corruption_nepotism,ne,devanagari,कृपावाद,keyword
+corruption_nepotism,hi,devanagari,नेपाल भ्रष्टाचार,phrase
+corruption_nepotism,ur,arabic,احتجاج,keyword
+youth_jobs_students,en,latin,Gen Z,phrase
+youth_jobs_students,en,latin,youth,keyword
+youth_jobs_students,en,latin,students,keyword
+youth_jobs_students,en,latin,unemployment,keyword
+youth_jobs_students,en,latin,jobs,keyword
+youth_jobs_students,ne-latn,latin,berojgari,keyword
+youth_jobs_students,ne-latn,latin,yuwa,keyword
+youth_jobs_students,ne-latn,latin,bidyarthi,keyword
+youth_jobs_students,hi,devanagari,छात्र,keyword
+youth_jobs_students,ur,arabic,نوجوان,keyword
+youth_jobs_students,ne,devanagari,जेन जी,phrase
+youth_jobs_students,ne,devanagari,युवा,keyword
+youth_jobs_students,ne,devanagari,विद्यार्थी,keyword
+youth_jobs_students,ne,devanagari,बेरोजगारी,keyword
+government_accountability,en,latin,KP Oli,phrase
+government_accountability,en,latin,KP Sharma Oli,phrase
+government_accountability,en,latin,Oli government,phrase
+government_accountability,en,latin,prime minister,phrase
+government_accountability,en,latin,parliament,keyword
+government_accountability,en,latin,Singha Durbar,phrase
+government_accountability,en,latin,resignation,keyword
+government_accountability,en,latin,accountability,keyword
+government_accountability,ne,devanagari,केपी ओली,phrase
+government_accountability,ne,devanagari,केपी शर्मा ओली,phrase
+government_accountability,ne,devanagari,ओली सरकार,phrase
+government_accountability,ne,devanagari,प्रधानमन्त्री,keyword
+government_accountability,ne,devanagari,सिंहदरबार,keyword
+government_accountability,ne,devanagari,राजीनामा,keyword
+government_accountability,hi,devanagari,इस्तीफा,keyword
+mobilization_location,en,latin,Maitighar,keyword
+mobilization_location,en,latin,Baneshwor,keyword
+mobilization_location,en,latin,Kathmandu protest,phrase
+mobilization_location,en,latin,Hami Nepal,phrase
+mobilization_location,ne-latn,latin,andolan,keyword
+mobilization_location,ne-latn,latin,aandolan,keyword
+mobilization_location,ne-latn,latin,birodh,keyword
+mobilization_location,ne-latn,latin,pradarshan,keyword
+mobilization_location,ne-latn,latin,julus,keyword
+mobilization_location,hi,devanagari,नेपाल,keyword
+mobilization_location,hi,devanagari,विरोध प्रदर्शन,phrase
+mobilization_location,ur,arabic,نیپال,keyword
+mobilization_location,ur,arabic,مظاہرہ,keyword
+mobilization_location,ne,devanagari,आन्दोलन,keyword
+mobilization_location,ne,devanagari,विरोध,keyword
+mobilization_location,ne,devanagari,प्रदर्शन,keyword
+mobilization_location,ne,devanagari,माइतीघर,keyword
+mobilization_location,ne,devanagari,बानेश्वर,keyword
+mobilization_location,ne,devanagari,काठमाडौं,keyword
+mobilization_location,ne,devanagari,काठमाडौँ,keyword
+mobilization_location,ne,devanagari,जुलुस,keyword
+anchored_english,en,latin,Nepal social media ban,phrase
+anchored_english,en,latin,Nepal Gen Z protest,phrase
+anchored_english,en,latin,Nepal anti corruption,phrase
+anchored_english,en,latin,Oli resignation,phrase
+mobilization_location,tag,latin,#GenZNepal,hashtag
+mobilization_location,tag,latin,#NepalProtest,hashtag
+corruption_nepotism,tag,latin,#NepoBaby,hashtag
+corruption_nepotism,tag,latin,#NepoKids,hashtag
+censorship_social_media,tag,latin,#SocialMediaBan,hashtag

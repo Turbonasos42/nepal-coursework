@@ -1,0 +1,4 @@
+event_id,event_date,city,event_type,description,source_url,verified
+gt001,2025-09-08,Kathmandu,protest,"Students and Gen Z protesters demonstrated in Kathmandu against corruption and the social media ban.",https://www.hrw.org/news/2025/09/09/nepal-police-fire-gen-z-protest,yes
+gt002,2025-09-08,Itahari,protest,"Human Rights Watch reported police opened fire in Itahari during the protest wave.",https://www.hrw.org/news/2025/09/09/nepal-police-fire-gen-z-protest,yes
+gt003,2025-09-09,Kathmandu,political_crisis,"Prime Minister K.P. Sharma Oli resigned after the protest escalation.",https://nrcs.org/wp-content/uploads/2025/09/NRCS-Consolidated-Situation-Update-1-Gen-Z-Protest.pdf,yes

@@ -1,0 +1,16 @@
+metric,value
+forecast_rows_total,1
+forecast_rows_evaluated,1
+ground_truth_events,3
+true_positive,1
+false_positive,0
+false_negative,0
+true_negative,0
+precision,1.0
+recall,1.0
+f1,1.0
+brier_score,0.0854
+events_detected,2
+events_missed,1
+event_recall,0.6667
+average_first_warning_lead_days,1.5

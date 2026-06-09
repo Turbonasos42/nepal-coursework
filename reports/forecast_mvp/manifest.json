@@ -1,0 +1,130 @@
+{
+  "posts_used": 13992,
+  "forecast_rows": 483,
+  "selected_course_level": "L4_city_event_forecast",
+  "selected_course_rows": 1,
+  "metrics": {
+    "forecast_rows_total": 483,
+    "forecast_rows_evaluated": 167,
+    "ground_truth_events": 3,
+    "true_positive": 6,
+    "false_positive": 128,
+    "false_negative": 0,
+    "true_negative": 33,
+    "precision": 0.0448,
+    "recall": 1.0,
+    "f1": 0.0857,
+    "brier_score": 0.4225,
+    "events_detected": 3,
+    "events_missed": 0,
+    "event_recall": 1.0,
+    "average_first_warning_lead_days": 3.0
+  },
+  "course_metrics": {
+    "forecast_rows_total": 1,
+    "forecast_rows_evaluated": 1,
+    "ground_truth_events": 3,
+    "true_positive": 1,
+    "false_positive": 0,
+    "false_negative": 0,
+    "true_negative": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "brier_score": 0.0854,
+    "events_detected": 2,
+    "events_missed": 1,
+    "event_recall": 0.6667,
+    "average_first_warning_lead_days": 1.5
+  },
+  "raw_inputs_before": {
+    "posts_csv": {
+      "path": "data\\platform_posts.csv",
+      "exists": 1,
+      "size_bytes": 14564384,
+      "mtime": "2026-05-17T21:39:44.647680",
+      "sha256": "cb637bf6585ad6c4155d3c99c8e5243ea4c5aa89944df84b10cb155b47700362"
+    },
+    "comments_csv": {
+      "path": "data\\platform_comments.csv",
+      "exists": 1,
+      "size_bytes": 37072266,
+      "mtime": "2026-05-17T21:39:44.361103",
+      "sha256": "f6d6485d655bc18f22385c4fc0698772cb888cc4b90b93656a4166c628843191"
+    },
+    "lexicon_csv": {
+      "path": "data\\nepal_trigger_lexicon.csv",
+      "exists": 1,
+      "size_bytes": 5517,
+      "mtime": "2026-05-16T00:44:17.851197",
+      "sha256": "1b875c992e62ea22112467005703c0680c143f6c2d8ba9692ce2c1b58b582d6b"
+    },
+    "ground_truth_csv": {
+      "path": "data\\ground_truth_events.csv",
+      "exists": 1,
+      "size_bytes": 687,
+      "mtime": "2026-05-14T04:53:50.448185",
+      "sha256": "fd538086ffadf2ca8c0084d0337197be58c1acb1c620c5c1f72878a9d8f24ef8"
+    },
+    "extra_posts": [
+      {
+        "path": "data\\derived\\external_pre_event_posts.csv",
+        "exists": 1,
+        "size_bytes": 17222,
+        "mtime": "2026-05-18T03:18:48.538497",
+        "sha256": "9d7f7061b189a37ed3343acd3c151c7d6ae4a58cb206ecb6cb5d0889486c51a3"
+      }
+    ]
+  },
+  "raw_inputs_after": {
+    "posts_csv": {
+      "path": "data\\platform_posts.csv",
+      "exists": 1,
+      "size_bytes": 14564384,
+      "mtime": "2026-05-17T21:39:44.647680",
+      "sha256": "cb637bf6585ad6c4155d3c99c8e5243ea4c5aa89944df84b10cb155b47700362"
+    },
+    "comments_csv": {
+      "path": "data\\platform_comments.csv",
+      "exists": 1,
+      "size_bytes": 37072266,
+      "mtime": "2026-05-17T21:39:44.361103",
+      "sha256": "f6d6485d655bc18f22385c4fc0698772cb888cc4b90b93656a4166c628843191"
+    },
+    "lexicon_csv": {
+      "path": "data\\nepal_trigger_lexicon.csv",
+      "exists": 1,
+      "size_bytes": 5517,
+      "mtime": "2026-05-16T00:44:17.851197",
+      "sha256": "1b875c992e62ea22112467005703c0680c143f6c2d8ba9692ce2c1b58b582d6b"
+    },
+    "ground_truth_csv": {
+      "path": "data\\ground_truth_events.csv",
+      "exists": 1,
+      "size_bytes": 687,
+      "mtime": "2026-05-14T04:53:50.448185",
+      "sha256": "fd538086ffadf2ca8c0084d0337197be58c1acb1c620c5c1f72878a9d8f24ef8"
+    },
+    "extra_posts": [
+      {
+        "path": "data\\derived\\external_pre_event_posts.csv",
+        "exists": 1,
+        "size_bytes": 17222,
+        "mtime": "2026-05-18T03:18:48.538497",
+        "sha256": "9d7f7061b189a37ed3343acd3c151c7d6ae4a58cb206ecb6cb5d0889486c51a3"
+      }
+    ]
+  },
+  "outputs": {
+    "forecast_daily": "reports\\forecast_mvp\\forecast_daily.csv",
+    "risk_timeline": "reports\\forecast_mvp\\risk_timeline.csv",
+    "top_evidence": "reports\\forecast_mvp\\top_evidence.csv",
+    "backtest_metrics": "reports\\forecast_mvp\\backtest_metrics.csv",
+    "summary": "reports\\forecast_mvp\\summary.md",
+    "course_forecast_daily": "reports\\forecast_mvp\\course_forecast_daily.csv",
+    "course_top_evidence": "reports\\forecast_mvp\\course_top_evidence.csv",
+    "course_backtest_metrics": "reports\\forecast_mvp\\course_backtest_metrics.csv",
+    "course_summary": "reports\\forecast_mvp\\course_summary.md",
+    "data_needed": "reports\\forecast_mvp\\data_needed.md"
+  }
+}
