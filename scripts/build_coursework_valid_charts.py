@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "reports" / "forecast_mvp" / "course_valid_charts"
 CRITERIA_CSV = ROOT / "reports" / "forecast_mvp" / "model_diagnostics" / "criteria_growth_timeseries.csv"
 COMMENTS_CSV = ROOT / "reports" / "forecast_mvp" / "comment_activity" / "posts_with_comments_daily.csv"
+MERGED_POSTS_CSV = ROOT / "data" / "derived" / "platform_posts_aug05_12_final_merged.csv"
+MERGED_COMMENTS_CSV = ROOT / "data" / "derived" / "platform_comments_aug05_12_final_merged.csv"
 AUDIT_CSV = ROOT / "data" / "derived" / "external_pre_event_sources_audit.csv"
 EVIDENCE_CSV = ROOT / "reports" / "forecast_mvp" / "course_top_evidence.csv"
 
@@ -47,6 +49,30 @@ def load_criteria(path: Path) -> pd.DataFrame:
 
 
 def load_comments(path: Path) -> pd.DataFrame:
+    if MERGED_POSTS_CSV.exists() and MERGED_COMMENTS_CSV.exists():
+        posts = pd.read_csv(MERGED_POSTS_CSV, usecols=["post_id", "published_at"])
+        posts["day"] = pd.to_datetime(posts["published_at"], errors="coerce").dt.normalize()
+        comments = pd.read_csv(MERGED_COMMENTS_CSV, usecols=["post_id"])
+        commented_post_ids = set(comments["post_id"].dropna().astype(str))
+        posts["post_id"] = posts["post_id"].astype(str)
+        posts["has_comments"] = posts["post_id"].isin(commented_post_ids)
+        daily = (
+            posts.groupby("day", dropna=True)
+            .agg(
+                total_posts=("post_id", "count"),
+                posts_with_parsed_comments=("has_comments", "sum"),
+            )
+            .reset_index()
+            .sort_values("day")
+        )
+        daily["commented_post_share"] = (
+            daily["posts_with_parsed_comments"] / daily["total_posts"].where(daily["total_posts"] != 0, pd.NA)
+        ).fillna(0.0)
+        daily["parsed_comment_rows"] = 0
+        daily["unique_sources_with_comments"] = 0
+        daily.to_csv(path, index=False)
+        return daily
+
     df = pd.read_csv(path)
     df["day"] = pd.to_datetime(df["day"])
     return df
@@ -62,10 +88,10 @@ def load_evidence(path: Path) -> pd.DataFrame:
 
 def add_key_markers(ax: plt.Axes) -> None:
     markers = [
-        (pd.Timestamp("2025-08-21"), "Aug peak", "#6b7280"),
-        (pd.Timestamp("2025-09-04"), "4 Sep", "#ea580c"),
-        (pd.Timestamp("2025-09-07"), "7 Sep", "#dc2626"),
-        (pd.Timestamp("2025-09-08"), "8 Sep", "#111827"),
+        (pd.Timestamp("2025-08-21"), "Пик августа", "#6b7280"),
+        (pd.Timestamp("2025-09-04"), "4 сен", "#ea580c"),
+        (pd.Timestamp("2025-09-07"), "7 сен", "#dc2626"),
+        (pd.Timestamp("2025-09-08"), "8 сен", "#111827"),
     ]
     ylim = ax.get_ylim()
     for day, label, color in markers:
@@ -82,10 +108,10 @@ def format_dates(ax: plt.Axes) -> None:
 def build_signal_components(criteria: pd.DataFrame, output_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(13.5, 6.4))
     components = [
-        ("social_media_ban", "Social media ban", "#ef4444"),
-        ("grievance", "Grievance", "#f59e0b"),
-        ("mobilization", "Mobilization", "#2563eb"),
-        ("government", "Government", "#10b981"),
+        ("social_media_ban", "Блокировка соцсетей", "#ef4444"),
+        ("grievance", "Недовольство", "#f59e0b"),
+        ("mobilization", "Мобилизация", "#2563eb"),
+        ("government", "Власть", "#10b981"),
     ]
     ax.stackplot(
         criteria["day"],
@@ -94,16 +120,16 @@ def build_signal_components(criteria: pd.DataFrame, output_dir: Path) -> None:
         colors=[color for _column, _label, color in components],
         alpha=0.85,
     )
-    ax.set_title("Signal Components in Pre-Event Data")
-    ax.set_ylabel("3-day signal count")
-    ax.set_xlabel("Date")
+    ax.set_title("Компоненты сигнала в предсобытийных данных")
+    ax.set_ylabel("Число сигналов за 3 дня")
+    ax.set_xlabel("Дата")
     add_key_markers(ax)
     format_dates(ax)
     ax.legend(loc="upper left", ncol=2, frameon=True)
     ax.text(
         0.01,
         -0.22,
-        "Built from reports/forecast_mvp/model_diagnostics/criteria_growth_timeseries.csv, which is derived from data/platform_posts.csv, data/platform_comments.csv and data/derived/external_pre_event_posts.csv.",
+        "Построено по criteria_growth_timeseries.csv на основе data/platform_posts.csv, data/platform_comments.csv и data/derived/external_pre_event_posts.csv.",
         transform=ax.transAxes,
         fontsize=9,
         color="#475467",
@@ -113,24 +139,24 @@ def build_signal_components(criteria: pd.DataFrame, output_dir: Path) -> None:
 
 def build_sources_vs_specificity(criteria: pd.DataFrame, output_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(13.5, 6.4))
-    ax.bar(criteria["day"], criteria["unique_sources"], width=0.9, color="#cbd5e1", label="Unique sources")
-    ax.set_ylabel("Unique sources in 3-day window")
-    ax.set_xlabel("Date")
+    ax.bar(criteria["day"], criteria["unique_sources"], width=0.9, color="#cbd5e1", label="Уникальные источники")
+    ax.set_ylabel("Уникальные источники в 3-дневном окне")
+    ax.set_xlabel("Дата")
     ax2 = ax.twinx()
-    ax2.plot(criteria["day"], criteria["explicit_event_details"], color="#dc2626", linewidth=2.6, label="Explicit event details")
-    ax2.plot(criteria["day"], criteria["exact_date_mentions"], color="#7c3aed", linewidth=2.0, linestyle="--", label="Exact date mentions")
-    ax2.plot(criteria["day"], criteria["exact_place_mentions"], color="#0f766e", linewidth=2.0, linestyle=":", label="Exact place mentions")
-    ax2.set_ylabel("Specific evidence count")
+    ax2.plot(criteria["day"], criteria["explicit_event_details"], color="#dc2626", linewidth=2.6, label="Явные детали события")
+    ax2.plot(criteria["day"], criteria["exact_date_mentions"], color="#7c3aed", linewidth=2.0, linestyle="--", label="Упоминания точной даты")
+    ax2.plot(criteria["day"], criteria["exact_place_mentions"], color="#0f766e", linewidth=2.0, linestyle=":", label="Упоминания точного места")
+    ax2.set_ylabel("Число конкретных подтверждений")
     add_key_markers(ax)
     format_dates(ax)
     handles1, labels1 = ax.get_legend_handles_labels()
     handles2, labels2 = ax2.get_legend_handles_labels()
     ax.legend(handles1 + handles2, labels1 + labels2, loc="upper left", ncol=2, frameon=True)
-    ax.set_title("Source Diversity vs Event Specificity")
+    ax.set_title("Разнообразие источников и конкретика события")
     ax.text(
         0.01,
         -0.22,
-        "This chart separates two different questions: how many distinct sources were present, and when the data started to contain exact place/date/event details.",
+        "График разделяет два вопроса: сколько независимых источников было в данных и когда появились точные дата, место и описание события.",
         transform=ax.transAxes,
         fontsize=9,
         color="#475467",
@@ -140,35 +166,52 @@ def build_sources_vs_specificity(criteria: pd.DataFrame, output_dir: Path) -> No
 
 def build_comment_coverage(comments: pd.DataFrame, output_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(13.5, 6.4))
+    ax.bar(
+        comments["day"],
+        comments["total_posts"],
+        width=0.9,
+        color="#e5e7eb",
+        label="Всего постов",
+    )
     ax.fill_between(
         comments["day"],
         comments["posts_with_parsed_comments"],
         color="#dbeafe",
         alpha=0.8,
-        label="Posts with parsed comments",
+        label="Посты с комментариями",
     )
     ax.plot(comments["day"], comments["posts_with_parsed_comments"], color="#2563eb", linewidth=2.4)
-    ax.set_ylabel("Posts with parsed comments")
-    ax.set_xlabel("Date")
+    ax.set_ylabel("Число постов")
+    ax.set_xlabel("Дата")
     ax2 = ax.twinx()
     ax2.plot(
         comments["day"],
         comments["commented_post_share"] * 100.0,
         color="#dc2626",
         linewidth=2.5,
-        label="Commented-post share, %",
+        label="Доля постов с комментариями, %",
     )
-    ax2.set_ylabel("Commented-post share, %")
+    ax2.set_ylabel("Доля постов с комментариями, %")
     add_key_markers(ax)
     format_dates(ax)
-    ax.set_title("Comment Coverage in Collected Facebook Data")
+    ax.axvspan(pd.Timestamp("2025-08-05"), pd.Timestamp("2025-08-11"), color="#fef3c7", alpha=0.35)
+    ax.text(
+        pd.Timestamp("2025-08-08"),
+        comments["total_posts"].max() * 0.92,
+        "Посты есть,\nкомментарии не собраны",
+        ha="center",
+        va="top",
+        fontsize=10,
+        color="#92400e",
+    )
+    ax.set_title("Покрытие комментариев в собранных Facebook-данных")
     handles1, labels1 = ax.get_legend_handles_labels()
     handles2, labels2 = ax2.get_legend_handles_labels()
     ax.legend(handles1 + handles2, labels1 + labels2, loc="upper left", frameon=True)
     ax.text(
         0.01,
         -0.22,
-        "Built directly from reports/forecast_mvp/comment_activity/posts_with_comments_daily.csv, which is derived from the raw data/platform_posts.csv and data/platform_comments.csv files.",
+        "Если локально доступен объединённый shard за 5-12 августа, график пересчитывается по нему. Провал относится к комментариям, а не к общему числу постов.",
         transform=ax.transAxes,
         fontsize=9,
         color="#475467",
@@ -179,15 +222,16 @@ def build_comment_coverage(comments: pd.DataFrame, output_dir: Path) -> None:
 def build_external_audit(audit: pd.DataFrame, output_dir: Path) -> None:
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14.2, 6.1), gridspec_kw={"width_ratios": [1.0, 1.35]})
     status_counts = audit["status"].value_counts().rename_axis("status").reset_index(name="count")
+    status_counts["status_ru"] = status_counts["status"].map({"included": "включено", "excluded": "исключено"}).fillna(status_counts["status"])
     ax1.pie(
         status_counts["count"],
-        labels=status_counts["status"],
+        labels=status_counts["status_ru"],
         colors=["#2563eb", "#cbd5e1"],
         autopct="%1.1f%%",
         startangle=90,
         textprops={"fontsize": 11},
     )
-    ax1.set_title("External Source Audit")
+    ax1.set_title("Аудит внешних источников")
 
     included = audit.loc[audit["status"] == "included"].copy()
     domains = (
@@ -200,14 +244,14 @@ def build_external_audit(audit: pd.DataFrame, output_dir: Path) -> None:
         .reset_index(name="count")
     )
     ax2.barh(domains["domain"], domains["count"], color="#0f766e")
-    ax2.set_title("Top Included Pre-Event Domains")
-    ax2.set_xlabel("Included rows")
+    ax2.set_title("Главные домены, вошедшие в выборку")
+    ax2.set_xlabel("Число включённых строк")
     for index, value in enumerate(domains["count"]):
         ax2.text(value + 0.15, index, str(value), va="center", fontsize=10, color="#0f172a")
     fig.text(
         0.02,
         0.02,
-        "Built from data/derived/external_pre_event_sources_audit.csv. The chart shows the real included/excluded split after cutoff filtering and the domains that actually entered the pre-event dataset.",
+        "Построено по data/derived/external_pre_event_sources_audit.csv. Показано реальное соотношение включённых и исключённых строк после cutoff-фильтрации.",
         fontsize=9,
         color="#475467",
     )
@@ -215,24 +259,44 @@ def build_external_audit(audit: pd.DataFrame, output_dir: Path) -> None:
 
 
 def build_top_evidence(evidence: pd.DataFrame, output_dir: Path) -> None:
-    evidence = evidence.copy().sort_values("risk_contribution", ascending=True)
+    topic_map = {
+        "corruption": "коррупция",
+        "gen_z": "Gen Z",
+        "government": "власть",
+        "mobilization": "мобилизация",
+    }
+    evidence = evidence.copy().sort_values("risk_contribution", ascending=False)
+    evidence["published_at"] = pd.to_datetime(evidence["published_at"], errors="coerce")
+    evidence["matched_terms_short"] = evidence["matched_terms"].fillna("").apply(
+        lambda value: ", ".join(part.strip() for part in str(value).split(";")[:2] if part.strip())
+    )
     evidence["display_label"] = evidence.apply(
-        lambda row: f"{row['source_name']} [{str(row['post_id'])[:6]}]",
+        lambda row: (
+            f"{str(row['source_name']).replace('Facebook search: ', 'Поиск Facebook: ')}\n"
+            f"{row['published_at'].strftime('%d.%m.%Y') if pd.notna(row['published_at']) else ''}\n"
+            f"{row['matched_terms_short']}"
+        ),
         axis=1,
     )
-    fig, ax = plt.subplots(figsize=(13.2, 6.4))
+    evidence["topics_ru"] = evidence["topics"].fillna("").apply(
+        lambda value: ", ".join(topic_map.get(part.strip(), part.strip()) for part in str(value).split(",") if part.strip())
+    )
+    fig, ax = plt.subplots(figsize=(13.2, 7.4))
     bars = ax.barh(evidence["display_label"], evidence["risk_contribution"], color="#7c3aed")
-    ax.set_title("Top Evidence Posts for the 7 Sep Kathmandu Forecast")
-    ax.set_xlabel("Risk contribution")
-    ax.set_ylabel("Source")
-    for bar, post_id in zip(bars, evidence["post_id"]):
+    ax.set_title("Ключевые посты для прогноза по Катманду на 7 сентября")
+    ax.set_xlabel("Вклад в риск-скор")
+    ax.set_ylabel("Источник")
+    for bar, topics in zip(bars, evidence["topics_ru"]):
         width = bar.get_width()
-        ax.text(width + 0.5, bar.get_y() + bar.get_height() / 2, f"{width:.2f}", va="center", fontsize=10, color="#111827")
-        ax.text(0.4, bar.get_y() + bar.get_height() / 2, post_id[:8], va="center", fontsize=9, color="#fafafa")
+        ax.text(width - 0.35, bar.get_y() + bar.get_height() / 2, f"{width:.2f}", va="center", ha="right", fontsize=10, color="#ffffff")
+        if topics:
+            ax.text(0.6, bar.get_y() + bar.get_height() / 2, str(topics).replace(",", ", "), va="center", fontsize=8.5, color="#fafafa")
+    ax.invert_yaxis()
+    ax.margins(y=0.06)
     ax.text(
         0.01,
         -0.22,
-        "All five bars come from reports/forecast_mvp/course_top_evidence.csv and map back to real post_id rows in data/platform_posts.csv.",
+        "Все пять строк берутся из course_top_evidence.csv и сопоставляются с реальными post_id в data/platform_posts.csv.",
         transform=ax.transAxes,
         fontsize=9,
         color="#475467",
